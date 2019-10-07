@@ -1,4 +1,4 @@
-#include "Agenda/include/Meeting.hpp"
+#include "../include/Meeting.hpp"
 
 Meeting::Meeting(const std::string &t_sponsor,
        const std::vector<std::string> &t_participator,
