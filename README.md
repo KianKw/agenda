@@ -1,3 +1,14 @@
-# Agenda
+# 中山大学 2019 年初级实训 Agenda 项目
 
-This is a project done during the Software Engineering Training in 2019.
+## my improvement
+
+### Log
+I finish the Log class </br>
+
+### Ctrl C
+
+I implemented the capture of Ctrl C
+
+### Exception
+
+I completed the exception handling and error message return request.
