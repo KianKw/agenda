@@ -3,12 +3,13 @@
 ## my improvement
 
 ### Log
-I finish the Log class </br>
+
+Program log </br>
 
 ### Ctrl C
 
-I implemented the capture of Ctrl C
+The capture of Ctrl C
 
 ### Exception
 
-I completed the exception handling and error message return request.
+The exception handling and error message return request.
