@@ -1,11 +1,7 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include <iostream>
-#include <fstream>
-#include <cstdio>
-#include <cstring>
-#include <time.h>
+#include <string>
 
 class Log {
 public:

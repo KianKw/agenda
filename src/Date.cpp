@@ -1,15 +1,17 @@
 #include "../include/Date.hpp"
 
-Date::Date()
-    :m_year(0), m_month(0)
-    ,m_day(0), m_hour(0)
-    ,m_minute(0) {}
-Date::Date(int t_year, int t_month, int t_day, int t_hour, int t_minute)
-    :m_year(t_year)
-    ,m_month(t_month)
-    ,m_day(t_day)
-    ,m_hour(t_hour)
-    ,m_minute(t_minute) {}
+Date::Date() :
+    m_year(0),
+    m_month(0),
+    m_day(0),
+    m_hour(0),
+    m_minute(0) {}
+Date::Date(int t_year, int t_month, int t_day, int t_hour, int t_minute) :
+    m_year(t_year),
+    m_month(t_month),
+    m_day(t_day),
+    m_hour(t_hour),
+    m_minute(t_minute) {}
 
 bool IsNumb(char c) {
     return (('0' <= c) && (c <= '9'));
@@ -38,7 +40,7 @@ Date::Date(const std::string &dateString) {
             return ;
     }
     int arr[] = {0,1,2,3, 5,6, 8,9, 11,12, 14,15};
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 12; ++i) {
         if (!IsNumb(dateString[arr[i]])) {
             return ;
         }

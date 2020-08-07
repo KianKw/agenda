@@ -1,6 +1,9 @@
 #include "../include/Log.hpp"
 // #include "../include/Path.hpp"
 
+#include <fstream>
+#include <time.h>
+
 void Log::LogToFile(std::string s) {
     time_t t = time(0);
     char str[100];

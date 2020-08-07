@@ -1,10 +1,8 @@
 #include "../include/AgendaUI.hpp"
-
+#include "../include/MyException.hpp"
 #include <iostream>
 #include <string>
 #include <csignal>
-#include "../include/MyException.hpp"
-
 
 static volatile int keepRunning = 1;
 
@@ -24,19 +22,17 @@ void sig_handler(int sig) {
 void AgendaUI::OperationLoop(void) {
     signal(SIGINT, sig_handler);
     while (keepRunning) {
-        // system("cls");
         string operation = getOperation();
         putchar(10);
         executeOperation(operation);
         putchar(10);
-        // system("pause");
     }
-    m_log.LogToFile(" ------ Ctrl C to End ------");
+    // m_log.LogToFile(" ------ Ctrl C to End ------");
     quitAgenda();
 }
 void AgendaUI::startAgenda(void) {
     m_agendaService.startAgenda();
-    m_log.LogToFile(" ------ StartAgenda ------");
+    // m_log.LogToFile(" ------ StartAgenda ------");
 }
 void PrintBeforeLoginOperations(void) {
     cout << "Action :" << endl;
@@ -93,7 +89,7 @@ bool AgendaUI::executeOperation(std::string t_operation) {
             quitAgenda();
         else {
             cout << "error: the operation dose not exit!" << endl;
-            m_log.LogToFile("BeforeLogIn - [error] " + t_operation + " operation dose not exit!");
+            // m_log.LogToFile("BeforeLogIn - [error] " + t_operation + " operation dose not exit!");
             return false;
         }
     } else {
@@ -127,7 +123,7 @@ bool AgendaUI::executeOperation(std::string t_operation) {
             deleteAllMeetings();
         else {
             cout << "error: the operation dose not exit!" << endl;
-            m_log.LogToFile(m_userName + " - [error] " + t_operation + " operation dose not exit!");
+            // m_log.LogToFile(m_userName + " - [error] " + t_operation + " operation dose not exit!");
             return false;
         }
     }
@@ -140,15 +136,15 @@ void AgendaUI::userLogIn(void) {
     try {
         m_agendaService.userLogIn(m_userName, m_userPassword);
         cout << "[log in] succeed!" << endl;
-        m_log.LogToFile(m_userName + " - [log in] succeed!");
+        // m_log.LogToFile(m_userName + " - [log in] succeed!");
     } catch (NotRegistered_User) {
         cout << "[log in] [error] User does not exist!" << endl;
-        m_log.LogToFile("BeforeLogIn - [log in] User does not exist!");
+        // m_log.LogToFile("BeforeLogIn - [log in] User does not exist!");
         m_userName = "";
         m_userPassword = "";
     } catch (PasswordError) {
         cout << "[log in] [error] Password error!" << endl;
-        m_log.LogToFile("BeforeLogIn - [log in] Password error!");
+        // m_log.LogToFile("BeforeLogIn - [log in] Password error!");
         m_userName = "";
         m_userPassword = "";
     }
@@ -161,31 +157,31 @@ void AgendaUI::userRegister(void) {
     try {
         m_agendaService.userRegister(name, password, email, phone);
         cout << "[register] succeed!" << endl;
-        m_log.LogToFile(name + " - [register] succeed!");
+        // m_log.LogToFile(name + " - [register] succeed!");
     } catch (NameRepeat_user) {
         cout << "[register] [error] This name has been registered!" << endl;
-        m_log.LogToFile(name + " - [register] error! This name has been registered!");
+        // m_log.LogToFile(name + " - [register] error! This name has been registered!");
     }
 }
 void AgendaUI::quitAgenda(void) {
     m_agendaService.quitAgenda();
-    m_log.LogToFile(" ------ QuitAgenda ------ ");
+    // m_log.LogToFile(" ------ QuitAgenda ------ ");
 }
 void AgendaUI::userLogOut(void) {
-    m_log.LogToFile(m_userName + " - [user log out]");
+    // m_log.LogToFile(m_userName + " - [user log out]");
     m_userName = "";
     m_userPassword = "";
 }
 void AgendaUI::deleteUser(void) {
     m_agendaService.deleteUser(m_userName, m_userPassword);
-    m_log.LogToFile(m_userName + " - [delete user]");
+    // m_log.LogToFile(m_userName + " - [delete user]");
     m_userName = "";
     m_userPassword = "";
 }
 void AgendaUI::listAllUsers(void) {
     std::list<User> temp = m_agendaService.listAllUsers();
     cout << "[list all users]" << endl;
-    m_log.LogToFile(m_userName + " - [list all user]");
+    // m_log.LogToFile(m_userName + " - [list all user]");
     printf("\n%-30s %-30s %-30s\n", "name", "email", "phone");
     for (std::list<User>::const_iterator it = temp.begin(); it != temp.end(); ++it) {
         printf("\n%-30s %-30s %-30s\n", it->getName().c_str(), it->getEmail().c_str(), it->getPhone().c_str());
@@ -215,37 +211,37 @@ void AgendaUI::createMeeting(void) {
     try {
         m_agendaService.createMeeting(m_userName, title, start_date, end_date, participators);
         cout << "[create meeting] succeed!" << endl;
-        m_log.LogToFile(m_userName + " - [create meeting] " + title + " succeed!");
+        // m_log.LogToFile(m_userName + " - [create meeting] " + title + " succeed!");
     } catch (MeetingNoParticipator) {
         cout << "[create meeting] [error] There is no participator" << endl;
-        m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] There is no participator!");
+        // m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] There is no participator!");
     } catch (NotRegistered_Sponsor) {
         cout << "[create meeting] [error] Sponsor has not registered" << endl;
-        m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] Sponsor has not registered!");
+        // m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] Sponsor has not registered!");
     } catch (NotRegistered_Participator) {
         cout << "[create meeting] [error] Participator have not registered" << endl;
-        m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] Participator have not registered!");
+        // m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] Participator have not registered!");
     } catch (NameRepeat_SponsorParticipator) {
         cout << "[create meeting] [error] The sponsor is in participators list" << endl;
-        m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] The sponsor is in participators list!");
+        // m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] The sponsor is in participators list!");
     } catch (NameRepeat_TWoParticipator) {
         cout << "[create meeting] [error] There are two participators have the same name" << endl;
-        m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] There are two participators have the same name!");
+        // m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] There are two participators have the same name!");
     } catch (TitleRepeat) {
         cout << "[create meeting] [error] The title has exited" << endl;
-        m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] The title has exited!");
+        // m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] The title has exited!");
     } catch (DateIllegal) {
         cout << "[create meeting] [error] The date is error" << endl;
-        m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] The date is error!");
+        // m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] The date is error!");
     } catch (SponsorBusy) {
         cout << "[create meeting] [error] The sponsor is busy" << endl;
-        m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] The sponsor is busy!");
+        // m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] The sponsor is busy!");
     } catch (ParticipatorBusy) {
         cout << "[create meeting] [error] The participator is busy" << endl;
-        m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] The participator is busy!");
+        // m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] The participator is busy!");
     } catch (ErrorFinishNone) {
         cout << "[create meeting] [error] None is finished" << endl;
-        m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] None is finish!");
+        // m_log.LogToFile(m_userName + " - [create meeting] " + title + " [error] None is finish!");
     }
 }
 void AgendaUI::addMeetingParticipator(void) {
@@ -256,19 +252,19 @@ void AgendaUI::addMeetingParticipator(void) {
     try {
         m_agendaService.addMeetingParticipator(m_userName, title, participator);
         cout << "[add meeting participator] succeed!" << endl;
-        m_log.LogToFile(m_userName + " - [add meeting participator] " + participator + " -> " + title);
+        // m_log.LogToFile(m_userName + " - [add meeting participator] " + participator + " -> " + title);
     } catch (NotRegistered_Participator) {
         cout << "[add meeting participator] [error] The participator has not registed" << endl;
-        m_log.LogToFile(m_userName + " - [add meeting participator] [error] The participator has not registed!");
+        // m_log.LogToFile(m_userName + " - [add meeting participator] [error] The participator has not registed!");
     } catch (NameRepeat_SponsorParticipator) {
         cout << "[add meeting participator] [error] Sponsor is the participator" << endl;
-        m_log.LogToFile(m_userName + " - [add meeting participator] [error] Sponsor is the participator!");
+        // m_log.LogToFile(m_userName + " - [add meeting participator] [error] Sponsor is the participator!");
     } catch (ParticipatorBusy) {
         cout << "[add meeting participator] [error] The participator is busy" << endl;
-        m_log.LogToFile(m_userName + " - [add meeting participator] [error] The participator is busy!");
+        // m_log.LogToFile(m_userName + " - [add meeting participator] [error] The participator is busy!");
     } catch (ErrorFinishNone) {
         cout << "[add meeting participator] [error] None is finished" << endl;
-        m_log.LogToFile(m_userName + " - [add meeting participator] " + title + " [error] None is finish!");
+        // m_log.LogToFile(m_userName + " - [add meeting participator] " + title + " [error] None is finish!");
     }
 }
 void AgendaUI::removeMeetingParticipator(void) {
@@ -279,16 +275,16 @@ void AgendaUI::removeMeetingParticipator(void) {
     try {
         m_agendaService.removeMeetingParticipator(m_userName, title, participator);
         cout << "[remove meeting participator] succeed!" << endl;
-        m_log.LogToFile(m_userName + " - [remove meeting participator] remove " + participator + " from " + title);
+        // m_log.LogToFile(m_userName + " - [remove meeting participator] remove " + participator + " from " + title);
     } catch (NoneMeetingName) {
         cout << "[remove meeting participator] [error] " << m_userName << " sponsor no meeting named " << title << endl;
-        m_log.LogToFile(m_userName + " - [remove meeting participator] [error] " + m_userName + " sponsor no meeting named " + title);
+        // m_log.LogToFile(m_userName + " - [remove meeting participator] [error] " + m_userName + " sponsor no meeting named " + title);
     } catch (NoneParticipatorName) {
         cout << "[remove meeting participator] [error] " << title << " has no participator named " << participator << endl;
-        m_log.LogToFile(m_userName + " - [remove meeting participator] [error] " + title + " has no participator named " + participator);
+        // m_log.LogToFile(m_userName + " - [remove meeting participator] [error] " + title + " has no participator named " + participator);
     } catch (ErrorFinishNone) {
         cout << "[remove meeting participator] [error] None is finished!" << endl;
-        m_log.LogToFile(m_userName + " - [remove meeting participator] [error] None is finished!");
+        // m_log.LogToFile(m_userName + " - [remove meeting participator] [error] None is finished!");
     }
 }
 void AgendaUI::requestQuitMeeting(void) {
@@ -299,36 +295,36 @@ void AgendaUI::requestQuitMeeting(void) {
     try {
         m_agendaService.quitMeeting(m_userName, title);
         cout << "[request to quit meeting] succeed!" << endl;
-        m_log.LogToFile(m_userName + " - [request to quit meeting] quit " + title);
+        // m_log.LogToFile(m_userName + " - [request to quit meeting] quit " + title);
     } catch (NoneMeetingName) {
         cout << "[request to quit meeting] [error] No meeting named " << title << endl;
-        m_log.LogToFile(m_userName + " - [request to quit meeting] [error] No meeting named " + title);
+        // m_log.LogToFile(m_userName + " - [request to quit meeting] [error] No meeting named " + title);
     } catch (SponsorQuitMeeting) {
         cout << "[request to quit meeting] [error] Sponsor can't quit meeting" << endl;
-        m_log.LogToFile(m_userName + " - [request to quit meeting] [error]  Sponsor can't quit meeting");
+        // m_log.LogToFile(m_userName + " - [request to quit meeting] [error]  Sponsor can't quit meeting");
     } catch (NoneParticipatorName) {
         cout << "[request to quit meeting] [error] " << m_userName << " is not a participator of " << title << endl;
-        m_log.LogToFile(m_userName + " - [request to quit meeting] [error] " + m_userName + " is not a participator of " + title);
+        // m_log.LogToFile(m_userName + " - [request to quit meeting] [error] " + m_userName + " is not a participator of " + title);
     } catch (ErrorFinishNone) {
         cout << "[request to quit meeting] [error] None is finished!" << endl;
-        m_log.LogToFile(m_userName + " - [request to quit meeting] [error] None is finished!");
+        // m_log.LogToFile(m_userName + " - [request to quit meeting] [error] None is finished!");
     }
 }
 void AgendaUI::listAllMeetings(void) {
     cout << "[list all meetings]" << endl;
-    m_log.LogToFile(m_userName + " - [list all meetings]");
+    // m_log.LogToFile(m_userName + " - [list all meetings]");
     std::list<Meeting> temp = m_agendaService.listAllMeetings(m_userName);
     printMeetings(temp);
 }
 void AgendaUI::listAllSponsorMeetings(void) {
     cout << "[list all sponsor meetings]" << endl;
-    m_log.LogToFile(m_userName + " - [list all sponsor meetings]");
+    // m_log.LogToFile(m_userName + " - [list all sponsor meetings]");
     std::list<Meeting> temp = m_agendaService.listAllSponsorMeetings(m_userName);
     printMeetings(temp);
 }
 void AgendaUI::listAllParticipateMeetings(void) {
     cout << "[list all participator meetings]" << endl;
-    m_log.LogToFile(m_userName + " - [list all participator meetings]");
+    // m_log.LogToFile(m_userName + " - [list all participator meetings]");
     std::list<Meeting> temp = m_agendaService.listAllParticipateMeetings(m_userName);
     printMeetings(temp);
 }
@@ -337,7 +333,7 @@ void AgendaUI::queryMeetingByTitle(void) {
     cout << "[querry meeting] [title]" << endl;
     cout << "[querry meeting] ";
     cin >> title;
-    m_log.LogToFile(m_userName + " - [query meeting] " + title);
+    // m_log.LogToFile(m_userName + " - [query meeting] " + title);
     std::list<Meeting> temp = m_agendaService.meetingQuery(m_userName, title);
     printMeetings(temp);
 }
@@ -346,7 +342,7 @@ void AgendaUI::queryMeetingByTimeInterval(void) {
     cout << "[query meeting] [start time(yyyy-mm-dd/hh:mm)] [end time(yyyy-mm-dd/hh:mm)]" << endl;
     cout << "[query meeting] ";
     cin >> start_date >> end_date;
-    m_log.LogToFile(m_userName + " - [query meeting] " + start_date + " to " + end_date);
+    // m_log.LogToFile(m_userName + " - [query meeting] " + start_date + " to " + end_date);
     std::list<Meeting> temp = m_agendaService.meetingQuery(m_userName, start_date, end_date);
     printMeetings(temp);
 }
@@ -358,20 +354,20 @@ void AgendaUI::deleteMeetingByTitle(void) {
     try {
         m_agendaService.deleteMeeting(m_userName, title);
         cout << "[delete meeting] succeed!" << endl;
-        m_log.LogToFile(m_userName + " - [delete meeting] " + title);
+        // m_log.LogToFile(m_userName + " - [delete meeting] " + title);
     } catch (ErrorFinishNone) {
         cout << "[delete meeting] [error] " << m_userName << " sponsor no meeting named " << title << endl;
-        m_log.LogToFile(m_userName + " - [delete meeting] [error] " + m_userName + " sponsor no meeting named " + title);
+        // m_log.LogToFile(m_userName + " - [delete meeting] [error] " + m_userName + " sponsor no meeting named " + title);
     }
 }
 void AgendaUI::deleteAllMeetings(void) {
     try {
         m_agendaService.deleteAllMeetings(m_userName);
         cout << "[delete all meeting] succeed!" << endl;
-        m_log.LogToFile(m_userName + " - [delete all meeting] succeed!");
+        // m_log.LogToFile(m_userName + " - [delete all meeting] succeed!");
     } catch (ErrorFinishNone) {
         cout << "[delete all meeting] error! There is no meeting!" << endl;
-        m_log.LogToFile(m_userName + " - [delete all meeting] error! There is no meeting!");
+        // m_log.LogToFile(m_userName + " - [delete all meeting] error! There is no meeting!");
     }
 }
 void AgendaUI::printMeetings(std::list<Meeting> t_meetings) {

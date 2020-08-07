@@ -1,8 +1,6 @@
 #include "../include/AgendaService.hpp"
-
-#include <iostream>
-
 #include "../include/MyException.hpp"
+#include <iostream>
 
 AgendaService::AgendaService() {
     startAgenda();

@@ -1,8 +1,8 @@
 #ifndef AGENDAUI_H
 #define AGENDAUI_H
 
-#include "AgendaService.hpp"
-#include "Log.hpp"
+#include "./AgendaService.hpp"
+#include "./Log.hpp"
 #include <iostream>
 #include <string>
 
